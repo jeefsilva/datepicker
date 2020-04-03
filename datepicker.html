@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="datepicker.css" />
+  </head>
+
+  <body>
+    <!-- Date Picker -->
+    <div id="datepicker">
+      <button id="datepicker-button">
+        This Year <img class="down-arrow" src="/images/down-arrow.svg" />
+      </button>
+      <div id="datepicker-container">
+        <div class="datepicker-header">
+          <button
+            class="datepicker-button-change"
+            id="datepicker-previous-button"
+          >
+            <img class="left-arrow" src="/images/left-arrow.svg" />
+          </button>
+          <div id="datepicker-indicator"></div>
+          <button class="datepicker-button-change" id="datepicker-next-button">
+            <img class="right-arrow" src="/images/right-arrow.svg" />
+          </button>
+        </div>
+        <ul id="datepicker-week-title"></ul>
+        <div id="datepicker-body"></div>
+        <div id="datepicker-body2"></div>
+        <div class="datepicker-footer">
+          <span id="datepicker-selected-text"></span>
+          <button id="datepicker-clear-button">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Picker -->
+  </body>
+  <script src="datepicker.js"></script>
+</html>
