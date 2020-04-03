@@ -10,28 +10,41 @@
         This Year <img class="down-arrow" src="/images/down-arrow.svg" />
       </button>
       <div id="datepicker-container">
-        <div class="datepicker-header">
-          <button
-            class="datepicker-button-change"
-            id="datepicker-previous-button"
-          >
-            <img class="left-arrow" src="/images/left-arrow.svg" />
-          </button>
-          <div id="datepicker-indicator"></div>
-          <button class="datepicker-button-change" id="datepicker-next-button">
-            <img class="right-arrow" src="/images/right-arrow.svg" />
-          </button>
+        <div class="calendar calendar-left">
+          <div class="datepicker-header">
+            <button
+              class="datepicker-button-change"
+              id="datepicker-previous-button"
+            >
+              <img class="left-arrow" src="/images/left-arrow.svg" />
+            </button>
+            <div id="datepicker-indicator" class="datepicker-indicator"></div>
+            <button class="datepicker-button-change" id="datepicker-next-button">
+              <img class="right-arrow" src="/images/right-arrow.svg" />
+            </button>
+          </div>
+          <ul id="datepicker-week-title" class="datepicker-week-title"></ul>
+          <div id="datepicker-body"></div>
         </div>
-        <ul id="datepicker-week-title"></ul>
-        <div id="datepicker-body"></div>
-        <div id="datepicker-body2"></div>
-        <div class="datepicker-footer">
-          <span id="datepicker-selected-text"></span>
-          <button id="datepicker-clear-button">Limpar</button>
+        <div class="calendar">
+          <div class="datepicker-header">
+            <button
+              class="datepicker-button-change"
+              id="datepicker-previous-button2"
+            >
+              <img class="left-arrow" src="/images/left-arrow.svg" />
+            </button>
+            <div id="datepicker-indicator2" class="datepicker-indicator"></div>
+            <button class="datepicker-button-change" id="datepicker-next-button2">
+              <img class="right-arrow" src="/images/right-arrow.svg" />
+            </button>
+          </div>
+          <ul id="datepicker-week-title2" class="datepicker-week-title"></ul>
+          <div id="datepicker-body2"></div>
         </div>
       </div>
     </div>
-
+   
     <!-- Date Picker -->
   </body>
   <script src="datepicker.js"></script>

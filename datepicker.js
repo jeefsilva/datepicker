@@ -22,11 +22,15 @@ const DAY_TIME = 86400000;
 /**
  * Variables
  */
-var currentMonth = new Date().getMonth() - 1;
+var currentMonth = new Date().getMonth() - 2;
+var currentMonth2 = new Date().getMonth() - 1;
 var currentYear = new Date().getFullYear();
+var currentYear2 = new Date().getFullYear();
 var currentIndicator = null;
+var currentIndicator2 = null;
 var selectedInitialDate = null;
 var selectedEndDate = null;
+var firstCalendar = false;
 
 /**
  * Component Elements
@@ -45,25 +49,39 @@ var datepickerPreviousButton = document.getElementById(
 );
 var datepickerIndicator = document.getElementById("datepicker-indicator");
 var datepickerWeekTitle = document.getElementById("datepicker-week-title");
+var datepickerNextButton2 = document.getElementById("datepicker-next-button2");
+var datepickerPreviousButton2 = document.getElementById(
+  "datepicker-previous-button2"
+);
+var datepickerIndicator2 = document.getElementById("datepicker-indicator2");
+var datepickerWeekTitle2 = document.getElementById("datepicker-week-title2");
 
 /**
  * Event Listeners
  */
 datepickerButton.addEventListener("click", evt => toggleDatepicker());
 datepickerNextButton.addEventListener("click", evt => changeIndicator(1));
-datepickerPreviousButton.addEventListener("click", evt => changeIndicator(-1));
-datepickerClearButton.addEventListener("click", evt => clearSelection());
-datepickerIndicator.addEventListener("click", evt => fillBody());
+datepickerNextButton2.addEventListener("click", evt => changeIndicator2(1));
 
+datepickerPreviousButton.addEventListener("click", evt => changeIndicator(-1));
+datepickerPreviousButton2.addEventListener("click", evt => changeIndicator2(-1));
+
+datepickerIndicator.addEventListener("click", evt => fillBody());
+datepickerIndicator2.addEventListener("click", evt => fillBody2());
+
+datepickerClearButton.addEventListener("click", evt => clearSelection());
 /**
  * Initial Conditions
  */
 WEEKDAY_NAMES.forEach(day => {
   const dayTitle = document.createElement("li");
+  const dayTitle2 = document.createElement("li");
   dayTitle.innerText = day;
+  dayTitle2.innerText = day;
   datepickerWeekTitle.appendChild(dayTitle);
+  datepickerWeekTitle2.appendChild(dayTitle2);
 });
-datepickerSelectedText.innerText = DEFAULT_SELECTED_TEXT;
+
 
 /**
  * Enable/disable the datepicker
@@ -72,8 +90,8 @@ function toggleDatepicker() {
   if (datepickerContainer.style.display === "flex") {
     datepickerContainer.style.display = "none";
   } else {
-    fillPreviousMonth();
     fillMonth();
+    fillMonth2();
     datepickerContainer.style.display = "flex";
   }
 }
@@ -98,6 +116,22 @@ function changeIndicator(d) {
   }
 }
 
+function changeIndicator2(d) {
+  switch (currentIndicator2) {
+    case "year":
+      currentYear2 += d;
+      fillYear2();
+      break;
+    case "month":
+      currentMonth2 += d;
+      fillMonth2();
+      break;
+    case "decade":
+      currentYear2 += d * 10;
+      fillDecade2();
+  }
+}
+
 /**
  * Calls the function to fill the datepicker body depending on indicator.
  * @param {'month' | 'year' | 'decade'} indicator
@@ -116,6 +150,23 @@ function fillBody(indicator = currentIndicator) {
       break;
     default:
       fillMonth(new Date());
+  }
+}
+
+function fillBody2(indicator = currentIndicator2) {
+  currentIndicator2 = indicator;
+  switch (indicator) {
+    case "month":
+      fillYear2();
+      break;
+    case "year":
+      fillDecade2();
+      break;
+    case "decade":
+      fillYear2(new Date().getFullYear());
+      break;
+    default:
+      fillMonth2(new Date());
   }
 }
 
@@ -151,16 +202,26 @@ function selectDay(day) {
     selectedInitialDate = day;
   }
 
-  if (day.getMonth() !== currentMonth) {
+  if (day.getMonth() !== currentMonth && !firstCalendar) {
+    currentMonth2 = day.getMonth();
+    currentYear2 = day.getFullYear();
+    firstCalendar = true;
+  } else  {
     currentMonth = day.getMonth();
     currentYear = day.getFullYear();
+    firstCalendar = false
   }
 
-  datepickerButton.innerHTML = `${selectedInitialDate.toLocaleDateString('pt-BR')} to ${selectedEndDate.toLocaleDateString('pt-BR')} <img class="down-arrow" src="/images/down-arrow.svg" /> `;
+  datepickerButton.innerHTML = `${selectedInitialDate.toLocaleDateString(
+    "pt-BR"
+  )} to ${selectedEndDate.toLocaleDateString(
+    "pt-BR"
+  )} <img class="down-arrow" src="/images/down-arrow.svg" /> `;
   fillMonth();
+  fillMonth2();
 
   if (selectedInitialDate !== selectedEndDate) {
-    toggleDatepicker()
+    toggleDatepicker();
   }
 }
 
@@ -185,22 +246,6 @@ function fillMonth(date = new Date(currentYear, currentMonth)) {
   currentMonth = date.getMonth();
   currentIndicator = "month";
 
-  datepickerBody2.innerHTML = "";
-  const monthDays = generateMonthDays(date);
-  monthDays.forEach(week =>
-    datepickerBody2.appendChild(generateWeekElement(week))
-  );
-
-  datepickerIndicator.innerText =
-  MONTH_NAMES[date.getMonth()] + " " + date.getFullYear();
-  datepickerWeekTitle.style.display = "flex";
-}
-
-function fillPreviousMonth(date = new Date(currentYear, currentMonth)) {
-  currentYear = date.getFullYear();
-  currentMonth = date.getMonth();
-  currentIndicator = "month";
-
   datepickerBody.innerHTML = "";
   const monthDays = generateMonthDays(date);
   monthDays.forEach(week =>
@@ -210,6 +255,22 @@ function fillPreviousMonth(date = new Date(currentYear, currentMonth)) {
   datepickerIndicator.innerText =
     MONTH_NAMES[date.getMonth()] + " " + date.getFullYear();
   datepickerWeekTitle.style.display = "flex";
+}
+
+function fillMonth2(date = new Date(currentYear2, currentMonth2)) {
+  currentYear2 = date.getFullYear();
+  currentMonth2 = date.getMonth();
+  currentIndicator2 = "month";
+
+  datepickerBody2.innerHTML = "";
+  const monthDays = generateMonthDays(date);
+  monthDays.forEach(week =>
+    datepickerBody2.appendChild(generateWeekElement(week))
+  );
+
+  datepickerIndicator2.innerText =
+    MONTH_NAMES[date.getMonth()] + " " + date.getFullYear();
+  datepickerWeekTitle2.style.display = "flex";
 }
 
 /**
@@ -234,6 +295,24 @@ function fillYear(fullYear = currentYear) {
   datepickerWeekTitle.style.display = "none";
 }
 
+function fillYear2(fullYear = currentYear) {
+  currentYear = fullYear;
+  currentIndicator2 = "year";
+
+  datepickerBody2.innerHTML = "";
+  for (let i = 0; i < 4; i++) {
+    const element = document.createElement("ul");
+    element.className = "datepicker-week-container";
+    for (let j = 0; j < 3; j++) {
+      element.appendChild(generateMonthElement(new Date(fullYear, i * 3 + j)));
+    }
+    datepickerBody2.appendChild(element);
+  }
+
+  datepickerIndicator2.innerText = fullYear;
+  datepickerWeekTitle2.style.display = "none";
+}
+
 /**
  * Fills the datepicker body with the decade of a given year.
  * @param {number} from
@@ -255,6 +334,25 @@ function fillDecade(from = currentYear) {
 
   datepickerIndicator.innerText = `${from} - ${from + 9}`;
   datepickerWeekTitle.style.display = "none";
+}
+
+function fillDecade2(from = currentYear) {
+  currentIndicator2 = "decade";
+
+  from = Math.floor(from / 10) * 10;
+
+  datepickerBody2.innerHTML = "";
+  for (let i = 0; i < 5; i++) {
+    const element = document.createElement("ul");
+    element.className = "datepicker-week-container";
+    for (let j = 0; j < 2; j++) {
+      element.appendChild(generateYearElement(from + i * 2 + j));
+    }
+    datepickerBody2.appendChild(element);
+  }
+
+  datepickerIndicator2.innerText = `${from} - ${from + 9}`;
+  datepickerWeekTitle2.style.display = "none";
 }
 
 /**
@@ -292,7 +390,7 @@ function generateDayElement(day) {
   if (Date.now() - day >= 0 && Date.now() - day <= DAY_TIME) {
     element.className += " datepicker-list-item-today"; // Today class
   }
-  if (day.getMonth() !== currentMonth) {
+  if (day.getMonth() !== currentMonth && day.getMonth() !== currentMonth2) {
     element.className += " datepicker-list-item-outday"; // Out month days class
   }
   if (Date.now() - DAY_TIME - day < 0) {
