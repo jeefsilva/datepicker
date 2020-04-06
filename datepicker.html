@@ -1,51 +1,80 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="datepicker.css" />
+    <script
+      type="text/javascript"
+      src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"
+    ></script>
   </head>
 
   <body>
     <!-- Date Picker -->
     <div id="datepicker">
       <button id="datepicker-button">
-        This Year <img class="down-arrow" src="/images/down-arrow.svg" />
+        Date Picker<img class="down-arrow" src="/images/down-arrow.svg" />
       </button>
       <div id="datepicker-container">
-        <div class="calendar calendar-left">
-          <div class="datepicker-header">
-            <button
-              class="datepicker-button-change"
-              id="datepicker-previous-button"
-            >
-              <img class="left-arrow" src="/images/left-arrow.svg" />
-            </button>
-            <div id="datepicker-indicator" class="datepicker-indicator"></div>
-            <button class="datepicker-button-change" id="datepicker-next-button">
-              <img class="right-arrow" src="/images/right-arrow.svg" />
-            </button>
-          </div>
-          <ul id="datepicker-week-title" class="datepicker-week-title"></ul>
-          <div id="datepicker-body"></div>
+        <div id="material-tabs">
+          <a id="tab1-tab" href="#tab1" class="active">Last 7 days</a>
+          <a id="tab2-tab" href="#tab2">Last 30 days</a>
+          <a id="tab3-tab" href="#tab3">This month</a>
+          <a id="tab4-tab" href="#tab4">This year</a>
+          <button id="datepicker-clear-button">
+            <img src="/images/clear.svg" />
+          </button>
+          <span class="bottom-bar"></span>
         </div>
-        <div class="calendar">
-          <div class="datepicker-header">
-            <button
-              class="datepicker-button-change"
-              id="datepicker-previous-button2"
-            >
-              <img class="left-arrow" src="/images/left-arrow.svg" />
-            </button>
-            <div id="datepicker-indicator2" class="datepicker-indicator"></div>
-            <button class="datepicker-button-change" id="datepicker-next-button2">
-              <img class="right-arrow" src="/images/right-arrow.svg" />
-            </button>
+        <div class="container-flex">
+          <div class="calendar calendar-left">
+            <div class="datepicker-header">
+              <button
+                class="datepicker-button-change"
+                id="datepicker-previous-button"
+              >
+                <img class="left-arrow" src="/images/left-arrow.svg" />
+              </button>
+              <div id="datepicker-indicator" class="datepicker-indicator"></div>
+              <button
+                class="datepicker-button-change"
+                id="datepicker-next-button"
+              >
+                <img class="right-arrow" src="/images/right-arrow.svg" />
+              </button>
+            </div>
+            <ul id="datepicker-week-title" class="datepicker-week-title"></ul>
+            <div id="datepicker-body"></div>
           </div>
-          <ul id="datepicker-week-title2" class="datepicker-week-title"></ul>
-          <div id="datepicker-body2"></div>
+          <div class="calendar">
+            <div class="datepicker-header">
+              <button
+                class="datepicker-button-change"
+                id="datepicker-previous-button2"
+              >
+                <img class="left-arrow" src="/images/left-arrow.svg" />
+              </button>
+              <div
+                id="datepicker-indicator2"
+                class="datepicker-indicator"
+              ></div>
+              <button
+                class="datepicker-button-change"
+                id="datepicker-next-button2"
+              >
+                <img class="right-arrow" src="/images/right-arrow.svg" />
+              </button>
+            </div>
+            <ul id="datepicker-week-title2" class="datepicker-week-title"></ul>
+            <div id="datepicker-body2"></div>
+          </div>
         </div>
       </div>
     </div>
-   
+    <!-- end container -->
     <!-- Date Picker -->
   </body>
+  <script
+    type="text/javascript"
+    src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"
+  ></script>
   <script src="datepicker.js"></script>
 </html>

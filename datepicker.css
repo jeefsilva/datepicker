@@ -39,7 +39,6 @@ button:active {
 #datepicker-container {
   position: absolute;
   top: 30px;
-  padding: 15px;
   left: 50%;
   margin-left: -165px;
 
@@ -49,8 +48,13 @@ button:active {
   border-radius: 4px;
 
   display: none;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
+}
+
+.container-flex {
+  display: flex;
+  padding: 10px 14px;
 }
 
 .calendar {
@@ -200,7 +204,7 @@ button:active {
 
 #datepicker-clear-button {
   display: none;
-  color: black;
+  margin-left: 100px;
 }
 
 @keyframes day-between {
@@ -212,4 +216,92 @@ button:active {
     color: var(--color-primary);
     background-color: var(--color-primary-light3);
   }
+}
+
+.container {
+	height: 500px;
+	width: 673px;
+	padding: 0;
+	margin: 10px;
+	border-radius: 5px;
+}
+
+header {
+	position: relative;
+}
+
+.hide {
+	display: none;
+}
+
+.tab-content {
+	padding: 25px;
+}
+
+#material-tabs {
+	position: relative;
+  position: relative;
+  display: flex;
+  padding: 0;
+  border-bottom: 1px solid #DCDCDC;
+}
+
+#material-tabs > a {
+	position: relative;
+	display: inline-block;
+	text-decoration: none;
+	padding: 16px 22px;
+	font-size: 16px;
+	font-weight: normal;
+	color: #B9B9B9;
+	text-align: center;
+	outline: ;
+}
+
+#material-tabs > a.active {
+  outline: none;
+  color: #E8126C;
+}
+
+#material-tabs > a:not(.active):hover {
+	background-color: inherit;
+	color: #7c848a;
+}
+
+@media only screen and (max-width: 520px) {
+	.nav-tabs#material-tabs > li > a {
+		font-size: 11px;
+	}
+}
+
+.bottom-bar {
+	position: absolute;
+	z-index: 10;
+	bottom: 0;
+	height: 3px;
+	background: #E8126C;
+	display: block;
+	left: 0;
+	transition: left 0.2s ease;
+	-webkit-transition: left 0.2s ease;
+}
+
+#tab1-tab.active ~ span.bottom-bar {
+	left: 0;
+	width: 132px;
+}
+
+#tab2-tab.active ~ span.bottom-bar {
+	left: 137px;
+	width: 140px;
+}
+
+#tab3-tab.active ~ span.bottom-bar {
+	left: 276px;
+	width: 135px;
+}
+
+#tab4-tab.active ~ span.bottom-bar {
+	left: 408px;
+	width: 120px;
 }

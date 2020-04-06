@@ -2,28 +2,28 @@
  * Constants
  */
 const MONTH_NAMES = [
-  "Janeiro",
-  "Fevereiro",
-  "Março",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
 ];
-const WEEKDAY_NAMES = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const WEEKDAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const DEFAULT_SELECTED_TEXT = "";
 const DAY_TIME = 86400000;
 
 /**
  * Variables
  */
-var currentMonth = new Date().getMonth() - 2;
-var currentMonth2 = new Date().getMonth() - 1;
+var currentMonth = new Date().getMonth() -1;
+var currentMonth2 = new Date().getMonth();
 var currentYear = new Date().getFullYear();
 var currentYear2 = new Date().getFullYear();
 var currentIndicator = null;
@@ -40,9 +40,7 @@ var datepickerBody2 = document.getElementById("datepicker-body2");
 var datepickerButton = document.getElementById("datepicker-button");
 var datepickerClearButton = document.getElementById("datepicker-clear-button");
 var datepickerContainer = document.getElementById("datepicker-container");
-var datepickerSelectedText = document.getElementById(
-  "datepicker-selected-text"
-);
+
 var datepickerNextButton = document.getElementById("datepicker-next-button");
 var datepickerPreviousButton = document.getElementById(
   "datepicker-previous-button"
@@ -55,6 +53,11 @@ var datepickerPreviousButton2 = document.getElementById(
 );
 var datepickerIndicator2 = document.getElementById("datepicker-indicator2");
 var datepickerWeekTitle2 = document.getElementById("datepicker-week-title2");
+
+var tab1 = document.getElementById("tab1-tab");
+var tab2 = document.getElementById("tab2-tab");
+var tab3 = document.getElementById("tab3-tab");
+var tab4 = document.getElementById("tab4-tab");
 
 /**
  * Event Listeners
@@ -70,6 +73,12 @@ datepickerIndicator.addEventListener("click", evt => fillBody());
 datepickerIndicator2.addEventListener("click", evt => fillBody2());
 
 datepickerClearButton.addEventListener("click", evt => clearSelection());
+
+tab1.addEventListener("click", evt => tabClick1());
+tab2.addEventListener("click", evt => tabClick2());
+tab3.addEventListener("click", evt => tabClick3());
+tab4.addEventListener("click", evt => tabClick4());
+
 /**
  * Initial Conditions
  */
@@ -82,6 +91,26 @@ WEEKDAY_NAMES.forEach(day => {
   datepickerWeekTitle2.appendChild(dayTitle2);
 });
 
+
+function tabClick1() {
+  datepickerButton.innerHTML = `${moment().subtract(6, 'days').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
+  toggleDatepicker();
+}
+
+function tabClick2() {
+  datepickerButton.innerHTML = `${moment().subtract(29, 'days').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
+  toggleDatepicker();
+}
+
+function tabClick3() {
+  datepickerButton.innerHTML = `${moment().startOf('month').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
+  toggleDatepicker();
+}
+
+function tabClick4() {
+  datepickerButton.innerHTML = `${moment().startOf('year').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
+  toggleDatepicker();
+}
 
 /**
  * Enable/disable the datepicker
@@ -98,7 +127,6 @@ function toggleDatepicker() {
 
 /**
  * Changes the current indicator (month, year or decade).
- * @param {number} d difference
  */
 function changeIndicator(d) {
   switch (currentIndicator) {
@@ -134,8 +162,8 @@ function changeIndicator2(d) {
 
 /**
  * Calls the function to fill the datepicker body depending on indicator.
- * @param {'month' | 'year' | 'decade'} indicator
  */
+
 function fillBody(indicator = currentIndicator) {
   currentIndicator = indicator;
   switch (indicator) {
@@ -172,7 +200,6 @@ function fillBody2(indicator = currentIndicator2) {
 
 /**
  * Select a day, it can be inital or ender.
- * @param {Date} day
  */
 function selectDay(day) {
   if (!selectedInitialDate && !selectedEndDate) {
@@ -225,22 +252,18 @@ function selectDay(day) {
   }
 }
 
-/**
- * Clear selected dates.
- * @param {boolean} keepState keep the body month or return to start
- */
-function clearSelection(keepState) {
+function clearSelection() {
   datepickerClearButton.style.display = "none";
   selectedInitialDate = null;
   selectedEndDate = null;
-  datepickerSelectedText.innerHTML = DEFAULT_SELECTED_TEXT;
-  fillMonth(keepState ? undefined : new Date());
+  fillMonth();
+  fillMonth2();
 }
 
 /**
  * Fills the datepicker body with the weeks of a given day.
- * @param {Date} date
  */
+
 function fillMonth(date = new Date(currentYear, currentMonth)) {
   currentYear = date.getFullYear();
   currentMonth = date.getMonth();
@@ -275,8 +298,8 @@ function fillMonth2(date = new Date(currentYear2, currentMonth2)) {
 
 /**
  * Fills the datepicker body with the months of given year.
- * @param {number} fullYear
  */
+
 function fillYear(fullYear = currentYear) {
   currentYear = fullYear;
   currentIndicator = "year";
@@ -315,8 +338,8 @@ function fillYear2(fullYear = currentYear) {
 
 /**
  * Fills the datepicker body with the decade of a given year.
- * @param {number} from
  */
+
 function fillDecade(from = currentYear) {
   currentIndicator = "decade";
 
@@ -358,8 +381,8 @@ function fillDecade2(from = currentYear) {
 /**
  * Returns a matrix with all dates of the month of given date.
  * It completes a matrix of 6 weeks with adjacent months days.
- * @param {Date} date
  */
+
 function generateMonthDays(date = new Date()) {
   let monthDays = [];
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -381,8 +404,8 @@ function generateMonthDays(date = new Date()) {
 
 /**
  * Returns a list item element to represent a day.
- * @param {Date} day
  */
+
 function generateDayElement(day) {
   let element = document.createElement("li");
   element.innerText = day.getDate();
@@ -413,8 +436,8 @@ function generateDayElement(day) {
 
 /**
  * Returns a list element to represent a week of a given array of days.
- * @param {Date[]} week
  */
+
 function generateWeekElement(week) {
   let element = document.createElement("ul");
   element.className = "datepicker-week-container";
@@ -424,8 +447,8 @@ function generateWeekElement(week) {
 
 /**
  * Returns a list item element to represent a month.
- * @param {Date} date
  */
+
 function generateMonthElement(date = new Date(currentYear)) {
   const element = document.createElement("li");
   element.innerText = MONTH_NAMES[date.getMonth()];
@@ -490,8 +513,8 @@ function generateMonthElement(date = new Date(currentYear)) {
 
 /**
  * Returns a list item element to represent a month.
- * @param {number} fullYear
  */
+
 function generateYearElement(fullYear) {
   const element = document.createElement("li");
   element.innerText = fullYear;
@@ -519,3 +542,34 @@ function generateYearElement(fullYear) {
   }
   return element;
 }
+
+
+$(document).ready(function() {
+  $('#material-tabs').each(function() {
+
+      var $active, $content, $links = $(this).find('a');
+
+      $active = $($links[0]);
+      $active.addClass('active');
+
+      $content = $($active[0].hash);
+
+      $links.not($active).each(function() {
+          $(this.hash).hide();
+      });
+
+      $(this).on('click', 'a', function(e) {
+
+          $active.removeClass('active');
+          $content.hide();
+
+          $active = $(this);
+          $content = $(this.hash);
+
+          $active.addClass('active');
+          $content.show();
+
+          e.preventDefault();
+      });
+  });
+});
