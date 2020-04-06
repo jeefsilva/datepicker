@@ -318,8 +318,8 @@ function fillYear(fullYear = currentYear) {
   datepickerWeekTitle.style.display = "none";
 }
 
-function fillYear2(fullYear = currentYear) {
-  currentYear = fullYear;
+function fillYear2(fullYear = currentYear2) {
+  currentYear2 = fullYear;
   currentIndicator2 = "year";
 
   datepickerBody2.innerHTML = "";
@@ -327,7 +327,7 @@ function fillYear2(fullYear = currentYear) {
     const element = document.createElement("ul");
     element.className = "datepicker-week-container";
     for (let j = 0; j < 3; j++) {
-      element.appendChild(generateMonthElement(new Date(fullYear, i * 3 + j)));
+      element.appendChild(generateMonthElement2(new Date(fullYear, i * 3 + j)));
     }
     datepickerBody2.appendChild(element);
   }
@@ -359,7 +359,7 @@ function fillDecade(from = currentYear) {
   datepickerWeekTitle.style.display = "none";
 }
 
-function fillDecade2(from = currentYear) {
+function fillDecade2(from = currentYear2) {
   currentIndicator2 = "decade";
 
   from = Math.floor(from / 10) * 10;
@@ -369,7 +369,7 @@ function fillDecade2(from = currentYear) {
     const element = document.createElement("ul");
     element.className = "datepicker-week-container";
     for (let j = 0; j < 2; j++) {
-      element.appendChild(generateYearElement(from + i * 2 + j));
+      element.appendChild(generateYearElement2(from + i * 2 + j));
     }
     datepickerBody2.appendChild(element);
   }
@@ -511,6 +511,68 @@ function generateMonthElement(date = new Date(currentYear)) {
   return element;
 }
 
+function generateMonthElement2(date = new Date(currentYear)) {
+  const element = document.createElement("li");
+  element.innerText = MONTH_NAMES[date.getMonth()];
+  element.className = "datepicker-list-item-container";
+  if (
+    new Date().getMonth() === date.getMonth() &&
+    new Date().getFullYear() === date.getFullYear()
+  ) {
+    element.className += " datepicker-list-item-today";
+  }
+  if (
+    new Date().getFullYear() < date.getFullYear() ||
+    (new Date().getMonth() < date.getMonth() &&
+      new Date().getFullYear() === date.getFullYear())
+  ) {
+    element.className += " datepicker-list-item-unavaliable";
+  } else {
+    element.addEventListener("click", evt =>
+      fillMonth2(new Date(currentYear, date.getMonth()))
+    );
+    if (selectedInitialDate && selectedEndDate) {
+      if (
+        (date.getFullYear() === selectedInitialDate.getFullYear() &&
+          date.getMonth() === selectedInitialDate.getMonth()) ||
+        (date.getFullYear() === selectedEndDate.getFullYear() &&
+          date.getMonth() === selectedEndDate.getMonth())
+      ) {
+        element.className += " datepicker-list-item-selected";
+      } else if (
+        date.getFullYear() === selectedInitialDate.getFullYear() ||
+        date.getFullYear() === selectedEndDate.getFullYear()
+      ) {
+        if (
+          selectedInitialDate.getFullYear() === selectedEndDate.getFullYear()
+        ) {
+          if (
+            date.getMonth() > selectedInitialDate.getMonth() &&
+            date.getMonth() < selectedEndDate.getMonth()
+          ) {
+            element.className += " datepicker-list-item-between";
+          }
+        } else {
+          if (
+            (date.getFullYear() === selectedInitialDate.getFullYear() &&
+              date.getMonth() > selectedInitialDate.getMonth()) ||
+            (date.getFullYear() === selectedEndDate.getFullYear() &&
+              date.getMonth() < selectedEndDate.getMonth())
+          ) {
+            element.className += " datepicker-list-item-between";
+          }
+        }
+      } else if (
+        date.getFullYear() > selectedInitialDate.getFullYear() &&
+        date.getFullYear() < selectedEndDate.getFullYear()
+      ) {
+        element.className += " datepicker-list-item-between";
+      }
+    }
+  }
+  return element;
+}
+
 /**
  * Returns a list item element to represent a month.
  */
@@ -543,6 +605,33 @@ function generateYearElement(fullYear) {
   return element;
 }
 
+function generateYearElement2(fullYear) {
+  const element = document.createElement("li");
+  element.innerText = fullYear;
+  element.className = "datepicker-list-item-container";
+  if (new Date().getFullYear() === fullYear) {
+    element.className += " datepicker-list-item-today";
+  }
+  if (new Date().getFullYear() < fullYear) {
+    element.className += " datepicker-list-item-unavaliable";
+  } else {
+    element.addEventListener("click", evt => fillYear2(fullYear));
+    if (selectedInitialDate && selectedEndDate) {
+      if (
+        fullYear === selectedInitialDate.getFullYear() ||
+        fullYear === selectedEndDate.getFullYear()
+      ) {
+        element.className += " datepicker-list-item-selected"; // Selected days class
+      } else if (
+        fullYear > selectedInitialDate.getFullYear() &&
+        fullYear < selectedEndDate.getFullYear()
+      ) {
+        element.className += " datepicker-list-item-between"; // Between selected days class
+      }
+    }
+  }
+  return element;
+}
 
 $(document).ready(function() {
   $('#material-tabs').each(function() {
