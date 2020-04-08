@@ -191,9 +191,6 @@ button:active {
   color: #c4c4c4;
 }
 
-#datepicker-selected-text {
-}
-
 .datepicker-footer {
   min-height: 45px;
   display: flex;
