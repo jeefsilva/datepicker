@@ -74,10 +74,10 @@ datepickerIndicator2.addEventListener("click", evt => fillBody2());
 
 datepickerClearButton.addEventListener("click", evt => clearSelection());
 
-tab1.addEventListener("click", evt => tabClick1());
-tab2.addEventListener("click", evt => tabClick2());
-tab3.addEventListener("click", evt => tabClick3());
-tab4.addEventListener("click", evt => tabClick4());
+tab1.addEventListener("click", evt => tabClick1(tab1));
+tab2.addEventListener("click", evt => tabClick2(tab2));
+tab3.addEventListener("click", evt => tabClick3(tab3));
+tab4.addEventListener("click", evt => tabClick4(tab4));
 
 /**
  * Initial Conditions
@@ -92,24 +92,40 @@ WEEKDAY_NAMES.forEach(day => {
 });
 
 
-function tabClick1() {
+function tabClick1(value) {
   datepickerButton.innerHTML = `${moment().subtract(6, 'days').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
   toggleDatepicker();
+    value.classList.add("active")
+    tab2.classList.remove("active")
+    tab3.classList.remove("active")
+    tab4.classList.remove("active")
 }
 
-function tabClick2() {
+function tabClick2(value) {
   datepickerButton.innerHTML = `${moment().subtract(29, 'days').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
   toggleDatepicker();
+  value.classList.add("active")
+    tab1.classList.remove("active")
+    tab3.classList.remove("active")
+    tab4.classList.remove("active")
 }
 
-function tabClick3() {
+function tabClick3(value) {
   datepickerButton.innerHTML = `${moment().startOf('month').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
   toggleDatepicker();
+  value.classList.add("active")
+  tab2.classList.remove("active")
+  tab1.classList.remove("active")
+  tab4.classList.remove("active")
 }
 
-function tabClick4() {
+function tabClick4(value) {
   datepickerButton.innerHTML = `${moment().startOf('year').format("DD/MM/YYYY")} to ${moment().format("DD/MM/YYYY")} <img class="down-arrow" src="/images/down-arrow.svg" />`;
   toggleDatepicker();
+  value.classList.add("active")
+  tab2.classList.remove("active")
+  tab3.classList.remove("active")
+  tab1.classList.remove("active")
 }
 
 /**
@@ -632,33 +648,3 @@ function generateYearElement2(fullYear) {
   }
   return element;
 }
-
-$(document).ready(function() {
-  $('#material-tabs').each(function() {
-
-      var $active, $content, $links = $(this).find('a');
-
-      $active = $($links[0]);
-      $active.addClass('active');
-
-      $content = $($active[0].hash);
-
-      $links.not($active).each(function() {
-          $(this.hash).hide();
-      });
-
-      $(this).on('click', 'a', function(e) {
-
-          $active.removeClass('active');
-          $content.hide();
-
-          $active = $(this);
-          $content = $(this.hash);
-
-          $active.addClass('active');
-          $content.show();
-
-          e.preventDefault();
-      });
-  });
-});

@@ -167,8 +167,6 @@ button:active {
   position: absolute;
   border: 3px solid var(--color-letters-light1);
   border-radius: 5px;
-  top: -3px;
-  left: -3px;
 }
 
 
